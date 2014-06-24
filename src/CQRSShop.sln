@@ -22,6 +22,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSShop.Service", "CQRSSho
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSShop.Search", "CQRSShop.Search\CQRSShop.Search.csproj", "{EA9F7365-0A26-44FD-86D1-A645B5671FEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSShop.Tests", "CQRSShop.Tests\CQRSShop.Tests.csproj", "{737BFB25-3617-437E-90D6-C15ECAD8FB25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5DFE6760-2FAB-499F-892B-46E2D0AD0F75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,8 +56,15 @@ Global
 		{EA9F7365-0A26-44FD-86D1-A645B5671FEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA9F7365-0A26-44FD-86D1-A645B5671FEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA9F7365-0A26-44FD-86D1-A645B5671FEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{737BFB25-3617-437E-90D6-C15ECAD8FB25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{737BFB25-3617-437E-90D6-C15ECAD8FB25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{737BFB25-3617-437E-90D6-C15ECAD8FB25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{737BFB25-3617-437E-90D6-C15ECAD8FB25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{737BFB25-3617-437E-90D6-C15ECAD8FB25} = {5DFE6760-2FAB-499F-892B-46E2D0AD0F75}
 	EndGlobalSection
 EndGlobal
