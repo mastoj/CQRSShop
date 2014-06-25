@@ -57,6 +57,7 @@
     <Compile Include="IDomainRepository.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="ICommand.cs" />
+    <Compile Include="IHandle.cs" />
     <Compile Include="InMemoryDomainRespository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

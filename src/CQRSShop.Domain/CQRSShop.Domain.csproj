@@ -39,8 +39,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Aggregates\Customer.cs" />
+    <Compile Include="CommandHandlers\CustomerCommandHandler.cs" />
+    <Compile Include="DomainEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CQRSShop.Contracts\CQRSShop.Contracts.fsproj">
+      <Project>{66f74977-c96f-4af0-9f98-d2ca94749649}</Project>
+      <Name>CQRSShop.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CQRSShop.Infrastructure\CQRSShop.Infrastructure.csproj">
+      <Project>{57ae018a-ba49-471d-97d7-c4ad2040d4b0}</Project>
+      <Name>CQRSShop.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

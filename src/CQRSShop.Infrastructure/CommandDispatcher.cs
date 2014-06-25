@@ -16,15 +16,15 @@ namespace CQRSShop.Infrastructure
             _domainRepository = domainRepository;
             _postExecutionPipe = postExecutionPipe;
             _preExecutionPipe = preExecutionPipe ?? Enumerable.Empty<Action<ICommand>>();
-            _routes = new Dictionary<Type, Func<object, IAggregate>>();
+            _routes =  new Dictionary<Type, Func<object, IAggregate>>();
         }
 
-        public void RegisterHandler<TCommand>(Func<TCommand, IAggregate> handle) where TCommand : class, ICommand
+        public void RegisterHandler<TCommand>(IHandle<TCommand> handler) where TCommand : class, ICommand
         {
-            _routes.Add(typeof(TCommand), o => handle(o as TCommand));
+            _routes.Add(typeof (TCommand), command => handler.Handle(command as TCommand));
         }
 
-        public void ExecuteCommand(ICommand command)
+        public void ExecuteCommand<TCommand>(TCommand command) where TCommand : ICommand
         {
             var commandType = command.GetType();
 
