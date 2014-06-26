@@ -8,3 +8,6 @@ type MarkCustomerAsPreferred = {Id: Guid; Discount: int } with interface IComman
 
 // Product commands
 type CreateProduct = {Id: Guid; Name: string; Price: int } with interface ICommand
+
+// Basket commands
+type CreateBasket = { Id: Guid; CustomerId: Guid} with interface ICommand

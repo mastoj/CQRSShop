@@ -21,7 +21,7 @@ namespace CQRSShop.Domain.CommandHandlers
             try
             {
                 var product = _domainRepository.GetById<Product>(command.Id);
-                throw new ProductAlreadyExistsException(command.Id, command.Name);
+                throw new ProductAlreadyExistsException(command.Id);
             }
             catch (AggregateNotFoundException)
             {

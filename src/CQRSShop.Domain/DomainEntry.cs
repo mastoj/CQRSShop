@@ -34,6 +34,8 @@ namespace CQRSShop.Domain
             var productCommandHandler = new ProductCommandHandler(domainRepository);
             commandDispatcher.RegisterHandler(productCommandHandler);
 
+            var basketCommandHandler = new BasketCommandHandler(domainRepository);
+            commandDispatcher.RegisterHandler<CreateBasket>(basketCommandHandler);
             return commandDispatcher;
         }
 

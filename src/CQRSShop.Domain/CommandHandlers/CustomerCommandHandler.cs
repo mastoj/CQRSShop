@@ -23,7 +23,7 @@ namespace CQRSShop.Domain.CommandHandlers
             try
             {
                 var customer = _domainRepository.GetById<Customer>(command.Id);
-                throw new CustomerAlreadyExistsException(command.Id, command.Name);
+                throw new CustomerAlreadyExistsException(command.Id);
             }
             catch (AggregateNotFoundException)
             {

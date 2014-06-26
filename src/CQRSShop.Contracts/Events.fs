@@ -13,3 +13,6 @@ type CustomerMarkedAsPreferred = {Id: Guid; Discount: int }
 type ProductCreated = {Id: Guid; Name: string; Price: int }
     with interface IEvent with member this.Id with get() = this.Id
 
+// Basket events
+type BasketCreated = { Id: Guid; CustomerId: Guid}
+    with interface IEvent with member this.Id with get() = this.Id
