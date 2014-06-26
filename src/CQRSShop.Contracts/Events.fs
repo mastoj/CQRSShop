@@ -28,3 +28,8 @@ type CustomerIsCheckingOutBasket = { Id: Guid }
 
 type BasketCheckedOut = { Id: Guid; ShippingAddress: Address } 
     with interface IEvent with member this.Id with get() = this.Id
+
+// Order events
+type OrderCreated ={ Id: Guid; BasketId: Guid }
+    with interface IEvent with member this.Id with get() = this.Id
+

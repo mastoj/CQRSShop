@@ -47,6 +47,7 @@
     <Compile Include="BasketTests\AddItemToBasketTest.cs" />
     <Compile Include="BasketTests\CheckoutBasketTests.cs" />
     <Compile Include="BasketTests\CreateBasketTests.cs" />
+    <Compile Include="BasketTests\MakePaymentTests.cs" />
     <Compile Include="BasketTests\ProceedCheckoutBasketTests.cs" />
     <Compile Include="CustomerTests\CreateCustomerTest.cs" />
     <Compile Include="CustomerTests\MakeCustomerPreferredTest.cs" />

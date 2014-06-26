@@ -23,6 +23,7 @@ namespace CQRSShop.Tests
         [TestFixtureTearDown]
         public void TearDown()
         {
+            IdGenerator.GenerateGuid = null;
             _preConditions = new Dictionary<Guid, IEnumerable<IEvent>>();
         }
 

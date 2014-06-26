@@ -27,6 +27,9 @@ namespace CQRSShop.Domain.Exceptions
         
     }
 
+    public class UnexpectedPaymentException : Exception
+    {}
+
     public class BasketAlreadExistsException : DuplicateAggregateException
     {
         public BasketAlreadExistsException(Guid id) : base(id)

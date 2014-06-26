@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aggregates\Customer.cs" />
+    <Compile Include="Aggregates\Order.cs" />
     <Compile Include="Aggregates\Product.cs" />
     <Compile Include="Aggregates\Basket.cs" />
     <Compile Include="CommandHandlers\BasketCommandHandler.cs" />

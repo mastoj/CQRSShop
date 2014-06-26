@@ -54,6 +54,7 @@
     <Compile Include="DomainRepositoryBase.cs" />
     <Compile Include="EventStoreDomainRepository.cs" />
     <Compile Include="IAggregate.cs" />
+    <Compile Include="IdGenerator.cs" />
     <Compile Include="IDomainRepository.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="ICommand.cs" />

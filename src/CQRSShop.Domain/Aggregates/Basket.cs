@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using CQRSShop.Contracts.Events;
 using CQRSShop.Contracts.Types;
 using CQRSShop.Domain.Exceptions;
@@ -9,6 +11,7 @@ namespace CQRSShop.Domain.Aggregates
     internal class Basket : AggregateBase
     {
         private int _discount;
+        private List<ItemAdded> _items;
 
         private Basket(Guid id, Guid customerId, int discount) : this()
         {
@@ -18,12 +21,19 @@ namespace CQRSShop.Domain.Aggregates
         public Basket()
         {
             RegisterTransition<BasketCreated>(Apply);
+            RegisterTransition<ItemAdded>(Apply);
+        }
+
+        private void Apply(ItemAdded obj)
+        {
+            _items.Add(obj);
         }
 
         private void Apply(BasketCreated obj)
         {
             Id = obj.Id;
             _discount = obj.Discount;
+            _items = new List<ItemAdded>();
         }
 
         public static IAggregate Create(Guid id, Customer customer)
@@ -48,6 +58,14 @@ namespace CQRSShop.Domain.Aggregates
             if(shippingAddress == null || string.IsNullOrWhiteSpace(shippingAddress.Street))
                 throw new MissingAddressException();
             RaiseEvent(new BasketCheckedOut(Id, shippingAddress));
+        }
+
+        public IAggregate MakePayment(int payment)
+        {
+            var expectedPayment = _items.Sum(y => y.DiscountedPrice);
+            if(expectedPayment != payment)
+                throw new UnexpectedPaymentException();
+            return new Order(Id);
         }
     }
 }

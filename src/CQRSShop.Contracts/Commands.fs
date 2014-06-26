@@ -15,3 +15,4 @@ type CreateBasket = { Id: Guid; CustomerId: Guid} with interface ICommand
 type AddItemToBasket = { Id: Guid; ProductId: Guid; Quantity: int } with interface ICommand
 type ProceedToCheckout = { Id: Guid } with interface ICommand
 type CheckoutBasket = { Id: Guid; ShippingAddress: Address } with interface ICommand
+type MakePayment = {Id: Guid; Payment: int } with interface ICommand

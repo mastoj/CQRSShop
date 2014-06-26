@@ -39,6 +39,7 @@ namespace CQRSShop.Domain
             commandDispatcher.RegisterHandler<AddItemToBasket>(basketCommandHandler);
             commandDispatcher.RegisterHandler<ProceedToCheckout>(basketCommandHandler);
             commandDispatcher.RegisterHandler<CheckoutBasket>(basketCommandHandler);
+            commandDispatcher.RegisterHandler<MakePayment>(basketCommandHandler);
             return commandDispatcher;
         }
 
