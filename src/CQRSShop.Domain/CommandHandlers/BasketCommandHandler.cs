@@ -8,7 +8,8 @@ namespace CQRSShop.Domain.CommandHandlers
 {
     internal class BasketCommandHandler :
         IHandle<CreateBasket>, 
-        IHandle<AddItemToBasket>
+        IHandle<AddItemToBasket>, 
+        IHandle<ProceedToCheckout>
     {
         private readonly IDomainRepository _domainRepository;
 
@@ -37,6 +38,13 @@ namespace CQRSShop.Domain.CommandHandlers
             var basket = _domainRepository.GetById<Basket>(command.Id);
             var product = _domainRepository.GetById<Product>(command.ProductId);
             basket.AddItem(product, command.Quantity);
+            return basket;
+        }
+
+        public IAggregate Handle(ProceedToCheckout command)
+        {
+            var basket = _domainRepository.GetById<Basket>(command.Id);
+            basket.ProceedToCheckout();
             return basket;
         }
     }

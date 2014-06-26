@@ -21,3 +21,6 @@ type ItemAdded = { Id: Guid; ProductId: Guid; ProductName: string; OriginalPrice
     with 
     override this.ToString() = sprintf "Item added. Id: %O, Price: %d, Discounted: %d, Quantity: %d" this.Id this.OriginalPrice this.DiscountedPrice this.Quantity
     interface IEvent with member this.Id with get() = this.Id
+
+type CustomerIsCheckingOutBasket = { Id: Guid }
+    with interface IEvent with member this.Id with get() = this.Id

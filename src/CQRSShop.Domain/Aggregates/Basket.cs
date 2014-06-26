@@ -35,5 +35,10 @@ namespace CQRSShop.Domain.Aggregates
             var discountedPrice = product.Price - discount;
             RaiseEvent(new ItemAdded(Id, product.Id, product.Name, product.Price, discountedPrice, quantity));
         }
+
+        public void ProceedToCheckout()
+        {
+            RaiseEvent(new CustomerIsCheckingOutBasket(Id));
+        }
     }
 }
