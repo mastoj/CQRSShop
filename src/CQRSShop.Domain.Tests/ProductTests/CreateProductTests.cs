@@ -2,9 +2,10 @@
 using CQRSShop.Contracts.Commands;
 using CQRSShop.Contracts.Events;
 using CQRSShop.Domain.Exceptions;
+using CQRSShop.Tests;
 using NUnit.Framework;
 
-namespace CQRSShop.Tests.ProductTests
+namespace CQRSShop.Domain.Tests.ProductTests
 {
     [TestFixture]
     public class CreateProductTests : TestBase

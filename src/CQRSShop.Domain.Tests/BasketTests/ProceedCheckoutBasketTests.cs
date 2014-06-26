@@ -1,9 +1,10 @@
 using System;
 using CQRSShop.Contracts.Commands;
 using CQRSShop.Contracts.Events;
+using CQRSShop.Tests;
 using NUnit.Framework;
 
-namespace CQRSShop.Tests.BasketTests
+namespace CQRSShop.Domain.Tests.BasketTests
 {
     [TestFixture]
     public class ProceedCheckoutBasketTests : TestBase
