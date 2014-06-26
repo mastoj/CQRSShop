@@ -31,6 +31,9 @@ namespace CQRSShop.Domain
             commandDispatcher.RegisterHandler<CreateCustomer>(customerCommandHandler);
             commandDispatcher.RegisterHandler<MarkCustomerAsPreferred>(customerCommandHandler);
 
+            var productCommandHandler = new ProductCommandHandler(domainRepository);
+            commandDispatcher.RegisterHandler(productCommandHandler);
+
             return commandDispatcher;
         }
 

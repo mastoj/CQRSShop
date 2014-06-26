@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CustomerTests\CreateCustomerTest.cs" />
     <Compile Include="CustomerTests\MakeCustomerPreferredTest.cs" />
+    <Compile Include="ProductTests\CreateProductTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>

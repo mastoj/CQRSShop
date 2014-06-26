@@ -40,9 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aggregates\Customer.cs" />
+    <Compile Include="Aggregates\Product.cs" />
     <Compile Include="CommandHandlers\CustomerCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ProductCommandHandler.cs" />
     <Compile Include="DomainEntry.cs" />
     <Compile Include="Exceptions\CustomerAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\DuplicateAggregateException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
