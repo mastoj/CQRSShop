@@ -2,7 +2,7 @@
 
 namespace CQRSShop.Domain.Exceptions
 {
-    public abstract class DuplicateAggregateException : Exception
+    public abstract class DuplicateAggregateException : DomainException
     {
         protected DuplicateAggregateException(Guid id) : base(CreateMessage(id))
         {
@@ -22,13 +22,31 @@ namespace CQRSShop.Domain.Exceptions
         }
     }
 
-    public class MissingAddressException : Exception
+    public class MissingAddressException : DomainException
     {
         
     }
 
-    public class UnexpectedPaymentException : Exception
-    {}
+    public class UnexpectedPaymentException : DomainException
+    { }
+
+    public class OrderCancelledException : DomainException
+    { }
+
+    public class ShippingStartedException : DomainException {}
+
+    public abstract class DomainException : Exception
+    {
+        public DomainException()
+        {            
+        }
+
+        protected DomainException(string createMessage) : base(createMessage)
+        {
+        }
+    }
+
+    public class InvalidOrderState : DomainException { }
 
     public class BasketAlreadExistsException : DuplicateAggregateException
     {

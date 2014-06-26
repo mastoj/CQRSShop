@@ -33,3 +33,12 @@ type BasketCheckedOut = { Id: Guid; ShippingAddress: Address }
 type OrderCreated ={ Id: Guid; BasketId: Guid }
     with interface IEvent with member this.Id with get() = this.Id
 
+type ShippingProcessStarted = {Id: Guid}
+    with interface IEvent with member this.Id with get() = this.Id
+
+type OrderCancelled = {Id: Guid}
+    with interface IEvent with member this.Id with get() = this.Id
+
+type OrderShipped = {Id: Guid}
+    with interface IEvent with member this.Id with get() = this.Id
+
