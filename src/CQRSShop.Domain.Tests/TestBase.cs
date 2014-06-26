@@ -46,7 +46,14 @@ namespace CQRSShop.Tests
 
         protected void WhenThrows<TException>(ICommand command) where TException : Exception
         {
-            Assert.Throws<TException>(() => When(command));
+            try
+            {
+                When(command);
+                Assert.Fail("Expected exception " + typeof(TException));
+            }
+            catch (TException)
+            {
+            }
         }
 
         protected void Given(params IEvent[] existingEvents)

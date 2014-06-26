@@ -1,5 +1,5 @@
 using System;
-using CQRSShop.Contracts.Commands;
+using CQRSShop.Contracts.Events;
 using CQRSShop.Infrastructure;
 
 namespace CQRSShop.Domain.Aggregates
@@ -18,12 +18,17 @@ namespace CQRSShop.Domain.Aggregates
 
         private void Apply(CustomerCreated obj)
         {
-            Id = Id;
+            Id = obj.Id;
         }
 
         public static IAggregate Create(Guid id, string name)
         {
             return new Customer(id, name);
+        }
+
+        public void MakePreferred(int discount)
+        {
+            RaiseEvent(new CustomerMarkedAsPreferred(Id, discount));
         }
     }
 }

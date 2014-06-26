@@ -27,8 +27,9 @@ namespace CQRSShop.Domain
         {
             var commandDispatcher = new CommandDispatcher(domainRepository, preExecutionPipe, postExecutionPipe);
 
-            var customerCommandHandler = new CustomerCommandHandler();
+            var customerCommandHandler = new CustomerCommandHandler(domainRepository);
             commandDispatcher.RegisterHandler<CreateCustomer>(customerCommandHandler);
+            commandDispatcher.RegisterHandler<MarkCustomerAsPreferred>(customerCommandHandler);
 
             return commandDispatcher;
         }

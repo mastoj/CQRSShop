@@ -42,6 +42,7 @@
     <Compile Include="Aggregates\Customer.cs" />
     <Compile Include="CommandHandlers\CustomerCommandHandler.cs" />
     <Compile Include="DomainEntry.cs" />
+    <Compile Include="Exceptions\CustomerAlreadyExistsException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
