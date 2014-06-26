@@ -1,4 +1,5 @@
 ﻿namespace CQRSShop.Contracts.Events
+open CQRSShop.Contracts.Types
 open CQRSShop.Infrastructure
 open System
 
@@ -23,4 +24,7 @@ type ItemAdded = { Id: Guid; ProductId: Guid; ProductName: string; OriginalPrice
     interface IEvent with member this.Id with get() = this.Id
 
 type CustomerIsCheckingOutBasket = { Id: Guid }
+    with interface IEvent with member this.Id with get() = this.Id
+
+type BasketCheckedOut = { Id: Guid; ShippingAddress: Address } 
     with interface IEvent with member this.Id with get() = this.Id

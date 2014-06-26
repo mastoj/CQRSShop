@@ -42,6 +42,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Types.fs" />
     <Compile Include="Commands.fs" />
     <Compile Include="Events.fs" />
   </ItemGroup>

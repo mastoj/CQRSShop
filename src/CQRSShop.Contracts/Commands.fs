@@ -1,4 +1,5 @@
 ﻿namespace CQRSShop.Contracts.Commands
+open CQRSShop.Contracts.Types
 open CQRSShop.Infrastructure
 open System
 
@@ -13,3 +14,4 @@ type CreateProduct = {Id: Guid; Name: string; Price: int } with interface IComma
 type CreateBasket = { Id: Guid; CustomerId: Guid} with interface ICommand
 type AddItemToBasket = { Id: Guid; ProductId: Guid; Quantity: int } with interface ICommand
 type ProceedToCheckout = { Id: Guid } with interface ICommand
+type CheckoutBasket = { Id: Guid; ShippingAddress: Address } with interface ICommand

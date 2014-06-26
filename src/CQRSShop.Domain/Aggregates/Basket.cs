@@ -1,5 +1,7 @@
 using System;
 using CQRSShop.Contracts.Events;
+using CQRSShop.Contracts.Types;
+using CQRSShop.Domain.Exceptions;
 using CQRSShop.Infrastructure;
 
 namespace CQRSShop.Domain.Aggregates
@@ -39,6 +41,13 @@ namespace CQRSShop.Domain.Aggregates
         public void ProceedToCheckout()
         {
             RaiseEvent(new CustomerIsCheckingOutBasket(Id));
+        }
+
+        public void Checkout(Address shippingAddress)
+        {
+            if(shippingAddress == null || string.IsNullOrWhiteSpace(shippingAddress.Street))
+                throw new MissingAddressException();
+            RaiseEvent(new BasketCheckedOut(Id, shippingAddress));
         }
     }
 }

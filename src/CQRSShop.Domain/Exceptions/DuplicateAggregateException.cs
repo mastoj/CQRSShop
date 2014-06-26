@@ -22,6 +22,11 @@ namespace CQRSShop.Domain.Exceptions
         }
     }
 
+    public class MissingAddressException : Exception
+    {
+        
+    }
+
     public class BasketAlreadExistsException : DuplicateAggregateException
     {
         public BasketAlreadExistsException(Guid id) : base(id)
