@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands.fs" />
-    <None Include="Script.fsx" />
     <Compile Include="Events.fs" />
   </ItemGroup>
   <ItemGroup>

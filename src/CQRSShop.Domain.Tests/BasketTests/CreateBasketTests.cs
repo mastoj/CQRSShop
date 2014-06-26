@@ -1,6 +1,7 @@
 ﻿using System;
 using CQRSShop.Contracts.Commands;
 using CQRSShop.Contracts.Events;
+using CQRSShop.Domain.Exceptions;
 using CQRSShop.Infrastructure.Exceptions;
 using NUnit.Framework;
 
@@ -14,10 +15,11 @@ namespace CQRSShop.Tests.BasketTests
         {
             var id = Guid.NewGuid();
             var customerId = Guid.NewGuid();
+            int discount = 0;
             string name = "John doe";
             Given(new CustomerCreated(customerId, name));
             When(new CreateBasket(id, customerId));
-            Then(new BasketCreated(id, customerId));
+            Then(new BasketCreated(id, customerId, discount));
         }
 
         [Test]
@@ -34,10 +36,23 @@ namespace CQRSShop.Tests.BasketTests
             var id = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             string name = "John doe";
-            Given(new BasketCreated(id, Guid.NewGuid()));
-            Given(new CustomerCreated(customerId, name));
+            int discount = 0;
+            Given(new BasketCreated(id, Guid.NewGuid(), discount),
+                new CustomerCreated(customerId, name));
+            WhenThrows<BasketAlreadExistsException>(new CreateBasket(id, customerId));
+        }
+
+        [Test]
+        public void GivenACustomerWithADiscount_CreatingABasketForTheCustomer_TheDiscountShouldBeIncluded()
+        {
+            var id = Guid.NewGuid();
+            var customerId = Guid.NewGuid();
+            int discount = 89;
+            string name = "John doe";
+            Given(new CustomerCreated(customerId, name),
+                new CustomerMarkedAsPreferred(customerId, discount));
             When(new CreateBasket(id, customerId));
-            Then(new BasketCreated(id, customerId));
+            Then(new BasketCreated(id, customerId, discount));
         }
     }
 }

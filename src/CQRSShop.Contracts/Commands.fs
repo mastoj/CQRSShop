@@ -11,3 +11,4 @@ type CreateProduct = {Id: Guid; Name: string; Price: int } with interface IComma
 
 // Basket commands
 type CreateBasket = { Id: Guid; CustomerId: Guid} with interface ICommand
+type AddItemToBasket = { Id: Guid; ProductId: Guid; Quantity: int } with interface ICommand

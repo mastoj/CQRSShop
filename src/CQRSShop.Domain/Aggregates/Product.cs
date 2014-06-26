@@ -11,9 +11,14 @@ namespace CQRSShop.Domain.Aggregates
             RegisterTransition<ProductCreated>(Apply);
         }
 
+        public string Name { get; private set; }
+        public int Price { get; private set; }
+
         private void Apply(ProductCreated obj)
         {
             Id = obj.Id;
+            Name = obj.Name;
+            Price = obj.Price;
         }
 
         private Product(Guid id, string name, int price) : this()

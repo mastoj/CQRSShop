@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasketTests\AddItemToBasketTest.cs" />
     <Compile Include="BasketTests\CreateBasketTests.cs" />
     <Compile Include="CustomerTests\CreateCustomerTest.cs" />
     <Compile Include="CustomerTests\MakeCustomerPreferredTest.cs" />

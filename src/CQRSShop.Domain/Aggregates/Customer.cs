@@ -9,6 +9,7 @@ namespace CQRSShop.Domain.Aggregates
         public Customer()
         {
             RegisterTransition<CustomerCreated>(Apply);
+            RegisterTransition<CustomerMarkedAsPreferred>(Apply);
         }
 
         private Customer(Guid id, string name)
@@ -16,9 +17,16 @@ namespace CQRSShop.Domain.Aggregates
             RaiseEvent(new CustomerCreated(id, name));
         }
 
+        public int Discount { get; set; }
+
         private void Apply(CustomerCreated obj)
         {
             Id = obj.Id;
+        }
+
+        private void Apply(CustomerMarkedAsPreferred obj)
+        {
+            Discount = obj.Discount;
         }
 
         public static IAggregate Create(Guid id, string name)
