@@ -45,6 +45,7 @@
     <Compile Include="Types.fs" />
     <Compile Include="Commands.fs" />
     <Compile Include="Events.fs" />
+    <Compile Include="CQRSShop.Contracts.Helpers.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CQRSShop.Infrastructure\CQRSShop.Infrastructure.csproj">

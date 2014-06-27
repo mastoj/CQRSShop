@@ -40,6 +40,13 @@ namespace CQRSShop.Domain
             commandDispatcher.RegisterHandler<ProceedToCheckout>(basketCommandHandler);
             commandDispatcher.RegisterHandler<CheckoutBasket>(basketCommandHandler);
             commandDispatcher.RegisterHandler<MakePayment>(basketCommandHandler);
+
+            var orderCommandHanler = new OrderHandler(domainRepository);
+            commandDispatcher.RegisterHandler<ApproveOrder>(orderCommandHanler);
+            commandDispatcher.RegisterHandler<StartShippingProcess>(orderCommandHanler);
+            commandDispatcher.RegisterHandler<CancelOrder>(orderCommandHanler);
+            commandDispatcher.RegisterHandler<ShipOrder>(orderCommandHanler);
+
             return commandDispatcher;
         }
 

@@ -5,13 +5,14 @@ using CQRSShop.Contracts.Events;
 using CQRSShop.Contracts.Types;
 using CQRSShop.Domain.Exceptions;
 using CQRSShop.Infrastructure;
+using Microsoft.FSharp.Collections;
 
 namespace CQRSShop.Domain.Aggregates
 {
     internal class Basket : AggregateBase
     {
         private int _discount;
-        private List<ItemAdded> _items;
+        private FSharpList<OrderLine> _orderLines;
 
         private Basket(Guid id, Guid customerId, int discount) : this()
         {
@@ -26,14 +27,14 @@ namespace CQRSShop.Domain.Aggregates
 
         private void Apply(ItemAdded obj)
         {
-            _items.Add(obj);
+            _orderLines = FSharpList<OrderLine>.Cons(obj.OrderLine, _orderLines);
         }
 
         private void Apply(BasketCreated obj)
         {
             Id = obj.Id;
             _discount = obj.Discount;
-            _items = new List<ItemAdded>();
+            _orderLines = FSharpList<OrderLine>.Empty;
         }
 
         public static IAggregate Create(Guid id, Customer customer)
@@ -45,7 +46,8 @@ namespace CQRSShop.Domain.Aggregates
         {
             var discount = (int)(product.Price * ((double)_discount/100));
             var discountedPrice = product.Price - discount;
-            RaiseEvent(new ItemAdded(Id, product.Id, product.Name, product.Price, discountedPrice, quantity));
+            var orderLine = new OrderLine(product.Id, product.Name, product.Price, discountedPrice, quantity);
+            RaiseEvent(new ItemAdded(Id, orderLine));
         }
 
         public void ProceedToCheckout()
@@ -62,10 +64,10 @@ namespace CQRSShop.Domain.Aggregates
 
         public IAggregate MakePayment(int payment)
         {
-            var expectedPayment = _items.Sum(y => y.DiscountedPrice);
+            var expectedPayment = _orderLines.Sum(y => y.DiscountedPrice);
             if(expectedPayment != payment)
                 throw new UnexpectedPaymentException();
-            return new Order(Id);
+            return new Order(Id, _orderLines);
         }
     }
 }

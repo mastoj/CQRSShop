@@ -21,4 +21,4 @@ type MakePayment = {Id: Guid; Payment: int } with interface ICommand
 type StartShippingProcess = { Id: Guid } with interface ICommand
 type CancelOrder = { Id: Guid } with interface ICommand
 type ShipOrder = { Id: Guid } with interface ICommand
-
+type ApproveOrder = { Id: Guid } with interface ICommand
