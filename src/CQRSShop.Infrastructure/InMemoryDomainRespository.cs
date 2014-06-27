@@ -3,21 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using CQRSShop.Infrastructure.Exceptions;
 using EventStore.ClientAPI.Exceptions;
+using Newtonsoft.Json;
 
 namespace CQRSShop.Infrastructure
 {
     public class InMemoryDomainRespository : DomainRepositoryBase
     {
-        public Dictionary<Guid, List<IEvent>> _eventStore = new Dictionary<Guid, List<IEvent>>();
+        public Dictionary<Guid, List<string>> _eventStore = new Dictionary<Guid, List<string>>();
         private List<IEvent> _latestEvents = new List<IEvent>();
+        private JsonSerializerSettings _serializationSettings;
+
+        public InMemoryDomainRespository()
+        {
+            _serializationSettings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            };
+        }
 
         public override IEnumerable<IEvent> Save<TAggregate>(TAggregate aggregate)
         {
             var eventsToSave = aggregate.UncommitedEvents().ToList();
+            var serializedEvents = eventsToSave.Select(Serialize).ToList();
             var expectedVersion = CalculateExpectedVersion(aggregate, eventsToSave);
             if (expectedVersion < 0)
             {
-                _eventStore.Add(aggregate.Id, eventsToSave);
+                _eventStore.Add(aggregate.Id, serializedEvents);
             }
             else
             {
@@ -28,11 +39,16 @@ namespace CQRSShop.Infrastructure
                     throw new WrongExpectedVersionException("Expected version " + expectedVersion +
                                                             " but the version is " + currentversion);
                 }
-                existingEvents.AddRange(eventsToSave);
+                existingEvents.AddRange(serializedEvents);
             }
             _latestEvents.AddRange(eventsToSave);
             aggregate.ClearUncommitedEvents();
             return eventsToSave;
+        }
+
+        private string Serialize(IEvent arg)
+        {
+            return JsonConvert.SerializeObject(arg, _serializationSettings);
         }
 
         public IEnumerable<IEvent> GetLatestEvents()
@@ -45,7 +61,8 @@ namespace CQRSShop.Infrastructure
             if (_eventStore.ContainsKey(id))
             {
                 var events = _eventStore[id];
-                return BuildAggregate<TResult>(events);
+                var deserializedEvents = events.Select(e => JsonConvert.DeserializeObject(e, _serializationSettings) as IEvent);
+                return BuildAggregate<TResult>(deserializedEvents);
             }
             throw new AggregateNotFoundException("Could not found aggregate of type " + typeof(TResult) + " and id " + id);
         }
@@ -54,7 +71,7 @@ namespace CQRSShop.Infrastructure
         {
             foreach (var eventsForAggregate in eventsForAggregates)
             {
-                _eventStore.Add(eventsForAggregate.Key, eventsForAggregate.Value.ToList());
+                _eventStore.Add(eventsForAggregate.Key, eventsForAggregate.Value.Select(Serialize).ToList());
             }
         }
     }
