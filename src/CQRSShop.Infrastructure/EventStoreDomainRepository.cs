@@ -11,7 +11,7 @@ namespace CQRSShop.Infrastructure
     public class EventStoreDomainRepository : DomainRepositoryBase
     {
         private IEventStoreConnection _connection;
-        private const string Category = "folke";
+        private const string Category = "cqrsshop";
 
         public EventStoreDomainRepository(IEventStoreConnection connection)
         {

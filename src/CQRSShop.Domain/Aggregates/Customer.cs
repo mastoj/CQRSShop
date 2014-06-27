@@ -12,7 +12,7 @@ namespace CQRSShop.Domain.Aggregates
             RegisterTransition<CustomerMarkedAsPreferred>(Apply);
         }
 
-        private Customer(Guid id, string name)
+        private Customer(Guid id, string name) : this()
         {
             RaiseEvent(new CustomerCreated(id, name));
         }
