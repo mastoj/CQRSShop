@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CQRSShop.Contracts.Events;
-using CQRSShop.Contracts.Types;
 using CQRSShop.Service.Documents;
 using EventStore.ClientAPI;
 
@@ -17,9 +16,16 @@ namespace CQRSShop.Service
 
         public void Start()
         {
-            _indexer = new Indexer();
+            _indexer = CreateIndexer();
             _eventHandlerMapping = CreateEventHandlerMapping();
             ConnectToEventstore();
+        }
+
+        private Indexer CreateIndexer()
+        {
+            var indexer = new Indexer();
+            indexer.Init();
+            return indexer;
         }
 
         private void ConnectToEventstore()
@@ -122,7 +128,7 @@ namespace CQRSShop.Service
         private void Handle(CustomerMarkedAsPreferred evt)
         {
             var customer = _indexer.Get<Customer>(evt.Id);
-            customer.IsPreferred = false;
+            customer.IsPreferred = true;
             customer.Discount = evt.Discount;
             _indexer.Index(customer);
         }
