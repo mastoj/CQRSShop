@@ -64,7 +64,7 @@ namespace CQRSShop.Domain.Aggregates
 
         public IAggregate MakePayment(int payment)
         {
-            var expectedPayment = _orderLines.Sum(y => y.DiscountedPrice);
+            var expectedPayment = _orderLines.Sum(y => y.DiscountedPrice * y.Quantity);
             if(expectedPayment != payment)
                 throw new UnexpectedPaymentException();
             return new Order(Id, _orderLines);

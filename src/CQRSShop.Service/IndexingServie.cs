@@ -4,6 +4,7 @@ using System.Linq;
 using CQRSShop.Contracts.Events;
 using CQRSShop.Service.Documents;
 using EventStore.ClientAPI;
+using Neo4jClient;
 
 namespace CQRSShop.Service
 {
@@ -13,12 +14,30 @@ namespace CQRSShop.Service
         private Dictionary<Type, Action<object>> _eventHandlerMapping;
         private Position? _latestPosition;
         private IEventStoreConnection _connection;
+        private GraphClient _graphClient;
 
         public void Start()
         {
+            _graphClient = CreateGraphClient();
             _indexer = CreateIndexer();
             _eventHandlerMapping = CreateEventHandlerMapping();
             ConnectToEventstore();
+        }
+
+        private GraphClient CreateGraphClient()
+        {
+            var graphClient = new GraphClient(new Uri("http://localhost:7474/db/data"));
+            graphClient.Connect();
+            DeleteAll(graphClient);
+            return graphClient;
+        }
+
+        private void DeleteAll(GraphClient graphClient)
+        {
+            graphClient.Cypher.Match("(n)")
+                .OptionalMatch("(n)-[r]-()")
+                .Delete("n,r")
+                .ExecuteWithoutResults();
         }
 
         private Indexer CreateIndexer()
@@ -69,9 +88,15 @@ namespace CQRSShop.Service
 
         private void Handle(OrderCreated evt)
         {
-            var basket = _indexer.Get<Basket>(evt.BasketId);
-            basket.BasketState = BasketState.Paid;
-            _indexer.Index(basket);
+            var existinBasket = _indexer.Get<Basket>(evt.BasketId);
+            existinBasket.BasketState = BasketState.Paid;
+            _indexer.Index(existinBasket);
+
+            _graphClient.Cypher
+                .Match("(customer:Customer)-[:HAS_BASKET]->(basket:Basket)-[]->(product:Product)")
+                .Where((Basket basket) => basket.Id == evt.BasketId)
+                .Create("customer-[:BOUGHT]->product")
+                .ExecuteWithoutResults();
         }
 
         private void Handle(BasketCheckedOut evt)
@@ -90,39 +115,65 @@ namespace CQRSShop.Service
 
         private void Handle(ItemAdded evt)
         {
-            var basket = _indexer.Get<Basket>(evt.Id);
-            var orderLines = basket.OrderLines;
+            var existingBasket = _indexer.Get<Basket>(evt.Id);
+            var orderLines = existingBasket.OrderLines;
             if (orderLines == null || orderLines.Length == 0)
             {
-                basket.OrderLines = new[] {evt.OrderLine};
+                existingBasket.OrderLines = new[] {evt.OrderLine};
             }
             else
             {
                 var orderLineList = orderLines.ToList();
                 orderLineList.Add(evt.OrderLine);
-                basket.OrderLines = orderLineList.ToArray();
+                existingBasket.OrderLines = orderLineList.ToArray();
             }
-            _indexer.Index(basket);
+
+            _indexer.Index(existingBasket);
+
+            _graphClient.Cypher
+                .Match("(basket:Basket)", "(product:Product)")
+                .Where((Basket basket) => basket.Id == evt.Id)
+                .AndWhere((Product product) => product.Id == evt.OrderLine.ProductId)
+                .Create("basket-[:HAS_ORDERLINE {orderLine}]->product")
+                .WithParam("orderLine", evt.OrderLine)
+                .ExecuteWithoutResults();
         }
 
         private void Handle(BasketCreated evt)
         {
-            _indexer.Index(new Basket()
+            var newBasket = new Basket()
             {
                 Id = evt.Id,
                 OrderLines = null,
                 BasketState = BasketState.Shopping
-            });
+            };
+            _indexer.Index(newBasket);
+            _graphClient.Cypher
+                .Create("(basket:Basket {newBasket})")
+                .WithParam("newBasket", newBasket)
+                .ExecuteWithoutResults();
+
+            _graphClient.Cypher
+                .Match("(customer:Customer)", "(basket:Basket)")
+                .Where((Customer customer) => customer.Id == evt.CustomerId)
+                .AndWhere((Basket basket) => basket.Id == evt.Id)
+                .Create("customer-[:HAS_BASKET]->basket")
+                .ExecuteWithoutResults();
         }
 
         private void Handle(ProductCreated evt)
         {
-            _indexer.Index(new Product()
+            var product = new Product()
             {
                 Id = evt.Id,
                 Name = evt.Name,
                 Price = evt.Price
-            });
+            };
+            _indexer.Index(product);
+            _graphClient.Cypher
+                .Create("(product:Product {newProduct})")
+                .WithParam("newProduct", product)
+                .ExecuteWithoutResults();
         }
 
         private void Handle(CustomerMarkedAsPreferred evt)
@@ -131,15 +182,28 @@ namespace CQRSShop.Service
             customer.IsPreferred = true;
             customer.Discount = evt.Discount;
             _indexer.Index(customer);
+
+            _graphClient.Cypher
+                .Match("(c:Customer)")
+                .Where((Customer c) => c.Id == customer.Id)
+                .Set("c = {c}")
+                .WithParam("c", customer)
+                .ExecuteWithoutResults();
         }
 
         private void Handle(CustomerCreated evt)
         {
-            _indexer.Index(new Customer()
+            var customer = new Customer()
             {
                 Id = evt.Id,
                 Name = evt.Name
-            });
+            };
+            _indexer.Index(customer);
+
+            _graphClient.Cypher
+                .Create("(customer:Customer {newCustomer})")
+                .WithParam("newCustomer", customer)
+                .ExecuteWithoutResults(); 
         }
 
         public void Stop()
