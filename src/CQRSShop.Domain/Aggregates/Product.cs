@@ -11,8 +11,8 @@ namespace CQRSShop.Domain.Aggregates
             RegisterTransition<ProductCreated>(Apply);
         }
 
-        public string Name { get; private set; }
-        public int Price { get; private set; }
+        internal string Name { get; private set; }
+        internal int Price { get; private set; }
 
         private void Apply(ProductCreated obj)
         {
@@ -26,7 +26,7 @@ namespace CQRSShop.Domain.Aggregates
             RaiseEvent(new ProductCreated(id, name, price));
         }
 
-        public static IAggregate Create(Guid id, string name, int price)
+        internal static IAggregate Create(Guid id, string name, int price)
         {
             return new Product(id, name, price);
         }

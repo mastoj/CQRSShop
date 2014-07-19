@@ -57,12 +57,12 @@ namespace CQRSShop.Domain.Aggregates
             }
         }
 
-        public void Approve()
+        internal void Approve()
         {
             RaiseEvent(new OrderApproved(Id));
         }
 
-        public void StartShippingProcess()
+        internal void StartShippingProcess()
         {
             if (_orderState == OrderState.Cancelled)
                 throw new OrderCancelledException();
@@ -70,7 +70,7 @@ namespace CQRSShop.Domain.Aggregates
             RaiseEvent(new ShippingProcessStarted(Id));
         }
 
-        public void Cancel()
+        internal void Cancel()
         {
             if (_orderState == OrderState.Created)
             {
@@ -82,7 +82,7 @@ namespace CQRSShop.Domain.Aggregates
             }
         }
 
-        public void ShipOrder()
+        internal void ShipOrder()
         {
             if (_orderState != OrderState.ShippingProcessStarted)
                 throw new InvalidOrderState();

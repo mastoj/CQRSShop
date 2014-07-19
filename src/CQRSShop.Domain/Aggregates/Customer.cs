@@ -17,7 +17,7 @@ namespace CQRSShop.Domain.Aggregates
             RaiseEvent(new CustomerCreated(id, name));
         }
 
-        public int Discount { get; set; }
+        internal int Discount { get; set; }
 
         private void Apply(CustomerCreated obj)
         {
@@ -29,12 +29,12 @@ namespace CQRSShop.Domain.Aggregates
             Discount = obj.Discount;
         }
 
-        public static IAggregate Create(Guid id, string name)
+        internal static IAggregate Create(Guid id, string name)
         {
             return new Customer(id, name);
         }
 
-        public void MakePreferred(int discount)
+        internal void MakePreferred(int discount)
         {
             RaiseEvent(new CustomerMarkedAsPreferred(Id, discount));
         }

@@ -37,12 +37,12 @@ namespace CQRSShop.Domain.Aggregates
             _orderLines = FSharpList<OrderLine>.Empty;
         }
 
-        public static IAggregate Create(Guid id, Customer customer)
+        internal static IAggregate Create(Guid id, Customer customer)
         {
             return new Basket(id, customer.Id, customer.Discount);
         }
 
-        public void AddItem(Product product, int quantity)
+        internal void AddItem(Product product, int quantity)
         {
             var discount = (int)(product.Price * ((double)_discount/100));
             var discountedPrice = product.Price - discount;
@@ -50,19 +50,19 @@ namespace CQRSShop.Domain.Aggregates
             RaiseEvent(new ItemAdded(Id, orderLine));
         }
 
-        public void ProceedToCheckout()
+        internal void ProceedToCheckout()
         {
             RaiseEvent(new CustomerIsCheckingOutBasket(Id));
         }
 
-        public void Checkout(Address shippingAddress)
+        internal void Checkout(Address shippingAddress)
         {
             if(shippingAddress == null || string.IsNullOrWhiteSpace(shippingAddress.Street))
                 throw new MissingAddressException();
             RaiseEvent(new BasketCheckedOut(Id, shippingAddress));
         }
 
-        public IAggregate MakePayment(int payment)
+        internal IAggregate MakePayment(int payment)
         {
             var expectedPayment = _orderLines.Sum(y => y.DiscountedPrice * y.Quantity);
             if(expectedPayment != payment)
