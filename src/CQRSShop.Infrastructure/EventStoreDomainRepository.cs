@@ -29,14 +29,14 @@ namespace CQRSShop.Infrastructure
             var expectedVersion = CalculateExpectedVersion(aggregate, events);
             var eventData = events.Select(CreateEventData);
             var streamName = AggregateToStreamName(aggregate.GetType(), aggregate.Id);
-            _connection.AppendToStream(streamName, expectedVersion, eventData);
+            _connection.AppendToStreamAsync(streamName, expectedVersion, eventData).Wait();
             return events;
         }
 
         public override TResult GetById<TResult>(Guid id)
         {
             var streamName = AggregateToStreamName(typeof(TResult), id);
-            var eventsSlice = _connection.ReadStreamEventsForward(streamName, 0, int.MaxValue, false);
+            var eventsSlice = _connection.ReadStreamEventsForwardAsync(streamName, 0, int.MaxValue, false).Result;
             if (eventsSlice.Status == SliceReadStatus.StreamNotFound)
             {
                 throw new AggregateNotFoundException("Could not found aggregate of type " + typeof(TResult) + " and id " + id);

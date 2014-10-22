@@ -1,30 +1,46 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using CQRSShop.Domain;
 using CQRSShop.Infrastructure;
-using Simple.Web;
-using Simple.Web.Behaviors;
 
 namespace CQRSShop.Web.Api
 {
-    public abstract class BasePostEndpoint<TCommand> : IPost, IInput<TCommand> where TCommand : ICommand
+    public abstract class BasePostEndpoint<TCommand> : ApiController where TCommand : ICommand
     {
-        public Status Post()
+        public abstract HttpResponseMessage Post(TCommand command);
+
+        private DomainEntry _domainEntry;
+
+        private DomainEntry DomainEntry
+        {
+            get
+            {
+                _domainEntry = _domainEntry ?? CreateDomainEntry();
+                return _domainEntry;
+            }
+        }
+
+        private DomainEntry CreateDomainEntry()
+        {
+            var connection = Web.Configuration.CreateConnection();
+            var domainRepository = new EventStoreDomainRepository(connection);
+            var domainEntry = new DomainEntry(domainRepository);
+            return domainEntry;
+        }
+
+        public HttpResponseMessage Execute(TCommand command)
         {
             try
             {
-                var connection = Configuration.CreateConnection();
-                var domainRepository = new EventStoreDomainRepository(connection);
-                var application = new DomainEntry(domainRepository);
-                application.ExecuteCommand(Input);
+                DomainEntry.ExecuteCommand(command);
+                return Request.CreateResponse(HttpStatusCode.Accepted);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Status.InternalServerError;
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return Status.OK;
         }
-
-        public TCommand Input { set; private get; }
     }
 }

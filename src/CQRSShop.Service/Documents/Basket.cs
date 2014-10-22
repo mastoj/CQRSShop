@@ -6,12 +6,12 @@ namespace CQRSShop.Service.Documents
 {
     public class Basket
     {
-        [ElasticProperty(Index = FieldIndexOption.not_analyzed)]
+        [ElasticProperty(Index = FieldIndexOption.NotAnalyzed)]
         public Guid Id { get; set; }
-        [ElasticProperty(Type = FieldType.nested)]
+        [ElasticProperty(Type = FieldType.Nested)]
         public OrderLine[] OrderLines { get; set; }
         public BasketState BasketState { get; set; }
-        [ElasticProperty(Index = FieldIndexOption.not_analyzed)]
+        [ElasticProperty(Index = FieldIndexOption.NotAnalyzed)]
         public Guid OrderId { get; set; }
     }
 

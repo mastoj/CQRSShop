@@ -17,7 +17,7 @@ namespace CQRSShop.Service
                     .SetDefaultUserCredentials(new UserCredentials("admin", "changeit"));
             var endPoint = new IPEndPoint(IPAddress.Loopback, 1113);
             _connection = EventStoreConnection.Create(settings, endPoint, null);
-            _connection.Connect();
+            _connection.ConnectAsync().Wait();
             return _connection;
         }
     }

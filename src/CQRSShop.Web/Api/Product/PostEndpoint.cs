@@ -1,13 +1,16 @@
-﻿using CQRSShop.Contracts.Commands;
-using Simple.Web;
-using Simple.Web.Links;
+﻿using System.Net.Http;
+using System.Web.Http;
+using CQRSShop.Contracts.Commands;
 
 namespace CQRSShop.Web.Api.Product
 {
-    [UriTemplate("/api/product")]
-    [Root(Rel = "product", Title = "Product", Type = "application/vnd.cqrsshop.createproduct")]
-    public class PostEndpoint : BasePostEndpoint<CreateProduct>
+    [RoutePrefix("api/product")]
+    public class CreateProductEndpoint : BasePostEndpoint<CreateProduct>
     {
-         
+        [Route]
+        public override HttpResponseMessage Post(CreateProduct command)
+        {
+            return Execute(command);
+        }
     }
 }
