@@ -1,13 +1,15 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
 using CQRSShop.Contracts.Commands;
+using Linky;
 
 namespace CQRSShop.Web.Api.Customer
 {
     [RoutePrefix("api/customer")]
-    public class CreateCustomerEndpoint : BasePostEndpoint<CreateCustomer>
+    public class CreateCustomerEndpointController : BasePostEndpoint<CreateCustomer>
     {
         [Route]
+        [LinksFrom(typeof(IndexModel), "createcustomer")]
         public override HttpResponseMessage Post(CreateCustomer command)
         {
             return Execute(command);
@@ -15,9 +17,10 @@ namespace CQRSShop.Web.Api.Customer
     }
 
     [RoutePrefix("api/customer")]
-    public class CustomerEndpoints : BasePostEndpoint<MarkCustomerAsPreferred>
+    public class CustomerEndpointController : BasePostEndpoint<MarkCustomerAsPreferred>
     {
-        [Route("{customerId}/preferred")]
+        [Route("{id}/preferred")]
+        [LinksFrom(typeof(CreateCustomer), "makepreferred")]
         public override HttpResponseMessage Post(MarkCustomerAsPreferred command)
         {
             return Execute(command);

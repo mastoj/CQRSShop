@@ -1,7 +1,6 @@
-﻿using System;
-using System.Net.Mime;
-using System.Web.Http;
+﻿using System.Web.Http;
 using CQRSShop.Web;
+using Linky;
 using Microsoft.Owin;
 using Newtonsoft.Json;
 using Owin;
@@ -20,6 +19,8 @@ namespace CQRSShop.Web
             };
             var configuration = new HttpConfiguration();
             configuration.MapHttpAttributeRoutes();
+            configuration.EnsureInitialized();
+            LinkyConfiguration.Configure(configuration);
             app.UseWebApi(configuration);
             app.Run((context) =>
             {

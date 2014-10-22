@@ -85,7 +85,6 @@
     <Compile Include="Documents\Customer.cs" />
     <Compile Include="Documents\Product.cs" />
     <Compile Include="EventSerialization.cs" />
-    <Compile Include="EventStoreConnectionWrapper.cs" />
     <Compile Include="Indexer.cs" />
     <Compile Include="IndexingServie.cs" />
     <Compile Include="Program.cs" />
@@ -96,6 +95,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CQRSShop.EventStore\CQRSShop.EventStore.csproj">
+      <Project>{80495476-68B9-4CBF-8A56-ECC0C2A898CB}</Project>
+      <Name>CQRSShop.EventStore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CQRSShop.Infrastructure\CQRSShop.Infrastructure.csproj">
       <Project>{57AE018A-BA49-471D-97D7-C4AD2040D4B0}</Project>
       <Name>CQRSShop.Infrastructure</Name>

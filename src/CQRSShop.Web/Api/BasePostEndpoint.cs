@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using CQRSShop.Domain;
+using CQRSShop.EventStore;
 using CQRSShop.Infrastructure;
 
 namespace CQRSShop.Web.Api
@@ -24,7 +25,7 @@ namespace CQRSShop.Web.Api
 
         private DomainEntry CreateDomainEntry()
         {
-            var connection = Web.Configuration.CreateConnection();
+            var connection = EventStoreConnectionWrapper.Connect();
             var domainRepository = new EventStoreDomainRepository(connection);
             var domainEntry = new DomainEntry(domainRepository);
             return domainEntry;
@@ -35,7 +36,7 @@ namespace CQRSShop.Web.Api
             try
             {
                 DomainEntry.ExecuteCommand(command);
-                return Request.CreateResponse(HttpStatusCode.Accepted);
+                return Request.CreateResponse(HttpStatusCode.Accepted, command);
             }
             catch (Exception ex)
             {

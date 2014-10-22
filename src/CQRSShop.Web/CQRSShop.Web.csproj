@@ -44,6 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EventStore.Client.3.0.0\lib\net40\EventStore.ClientAPI.dll</HintPath>
     </Reference>
+    <Reference Include="Linky">
+      <HintPath>..\..\..\Linky\Linky\bin\Debug\Linky.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -108,7 +111,6 @@
     <Compile Include="Api\GetEndpoint.cs" />
     <Compile Include="Api\Order\OrderEndpoints.cs" />
     <Compile Include="Api\Product\PostEndpoint.cs" />
-    <Compile Include="Configuration.cs" />
     <Compile Include="OwinAppSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -120,6 +122,10 @@
     <ProjectReference Include="..\CQRSShop.Domain\CQRSShop.Domain.csproj">
       <Project>{00afe5da-93ef-4c5a-be98-006ecf0e42e6}</Project>
       <Name>CQRSShop.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CQRSShop.EventStore\CQRSShop.EventStore.csproj">
+      <Project>{80495476-68B9-4CBF-8A56-ECC0C2A898CB}</Project>
+      <Name>CQRSShop.EventStore</Name>
     </ProjectReference>
     <ProjectReference Include="..\CQRSShop.Infrastructure\CQRSShop.Infrastructure.csproj">
       <Project>{57ae018a-ba49-471d-97d7-c4ad2040d4b0}</Project>

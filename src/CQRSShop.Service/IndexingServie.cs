@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CQRSShop.Contracts.Events;
+using CQRSShop.EventStore;
 using CQRSShop.Service.Documents;
 using EventStore.ClientAPI;
 using Neo4jClient;

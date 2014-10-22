@@ -1,13 +1,15 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
 using CQRSShop.Contracts.Commands;
+using Linky;
 
 namespace CQRSShop.Web.Api.Order
 {
     [RoutePrefix("api/order")]
-    public class ApproveOrderPostEndpoint : BasePostEndpoint<ApproveOrder>
+    public class ApproveOrderPostEndpointController : BasePostEndpoint<ApproveOrder>
     {
-        [Route("{orderId}/approve")]
+        [Route("{id}/approve")]
+        [LinksFrom(typeof(MakePayment), "approveorder")]
         public override HttpResponseMessage Post(ApproveOrder command)
         {
             return Execute(command);
@@ -15,9 +17,10 @@ namespace CQRSShop.Web.Api.Order
     }
 
     [RoutePrefix("api/order")]
-    public class CancelOrderEndpoint : BasePostEndpoint<CancelOrder>
+    public class CancelOrderEndpointController : BasePostEndpoint<CancelOrder>
     {
-        [Route("{orderId}/cancel")]
+        [Route("{id}/cancel")]
+        [LinksFrom(typeof(MakePayment), "cancelorder")]
         public override HttpResponseMessage Post(CancelOrder command)
         {
             return Execute(command);
@@ -25,9 +28,10 @@ namespace CQRSShop.Web.Api.Order
     }
 
     [RoutePrefix("api/order")]
-    public class ShipOrderEndpoint : BasePostEndpoint<ShipOrder>
+    public class ShipOrderEndpointController : BasePostEndpoint<ShipOrder>
     {
-        [Route("{orderId}/ship")]
+        [Route("{id}/ship")]
+        [LinksFrom(typeof(MakePayment), "shiporder")]
         public override HttpResponseMessage Post(ShipOrder command)
         {
             return Execute(command);
@@ -35,9 +39,10 @@ namespace CQRSShop.Web.Api.Order
     }
 
     [RoutePrefix("api/order")]
-    public class PostEndpoint : BasePostEndpoint<StartShippingProcess>
+    public class PostEndpointController : BasePostEndpoint<StartShippingProcess>
     {
-        [Route("{orderId}/startshipping")]
+        [Route("{id}/startshipping")]
+        [LinksFrom(typeof(MakePayment), "startshippingprocess")]
         public override HttpResponseMessage Post(StartShippingProcess command)
         {
             return Execute(command);
