@@ -52,7 +52,7 @@ module Domain =
         | CreateProduct(name, price) -> Some([ProductCreated(name, price)])
         | _ -> None
 
-    let getHolyTriage c : (a, a -> EventData -> Option a, a -> CommandData -> b) =
+    let inline getHolyTriage c : (a, a -> EventData -> Option a, a -> CommandData -> b) =
         match c with
         | CreateCustomer(_) -> (defaultCustomer, customerTransitions, customerHandlers)
         | MarkCustomerAsPreferred(_) -> (defaultCustomer, customerTransitions, customerHandlers)
